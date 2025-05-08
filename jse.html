@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Kontak</title>
+    <style>
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <form id="contactForm">
+        <label for="name">Nama Anda</label>
+        <input type="text" id="name" name="name">
+        <span class="error" id="nameError"></span>
+
+        <label for="phone">Nomor Telepon Anda</label>
+        <input type="text" id="phone" name="phone">
+        <span class="error" id="phoneError"></span>
+
+        <label for="email">Email anda</label>
+        <input type="email" id="email" name="email">
+        <span class="error" id="emailError"></span>
+
+        <label for="message">Beri tahu kami masukan anda</label>
+        <textarea id="message" name="message"></textarea>
+        <span class="error" id="messageError"></span>
+
+        <button type="submit">Kirim Pesan</button>
+    </form>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            let isValid = true;
+
+            // Reset error messages
+            document.getElementById("nameError").textContent = "";
+            document.getElementById("phoneError").textContent = "";
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("messageError").textContent = "";
+
+            // Validasi Nama
+            const name = document.getElementById("name").value.trim();
+            if (!name) {
+                document.getElementById("nameError").textContent = "Nama dibutuhkan!";
+                isValid = false;
+            }
+
+            // Validasi Nomor Telepon
+            const phone = document.getElementById("phone").value.trim();
+            if (!phone) {
+                document.getElementById("phoneError").textContent = "Nomor telepon dibutuhkan!";
+                isValid = false;
+            }
+
+            // Validasi Email
+            const email = document.getElementById("email").value.trim();
+            if (!email) {
+                document.getElementById("emailError").textContent = "Alamat email dibutuhkan!";
+                isValid = false;
+            }
+
+            // Validasi Pesan
+            const message = document.getElementById("message").value.trim();
+            if (!message) {
+                document.getElementById("messageError").textContent = "Feedback dibutuhkan!";
+                isValid = false;
+            }
+
+            // Jika semua validasi berhasil
+            if (isValid) {
+                // Kirim form
+                alert("Form berhasil dikirim!");
+                // Lakukan aksi pengiriman form di sini
+            }
+        });
+    </script>
+</body>
+</html>

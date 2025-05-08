@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eFishery - Contact Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .error-border {
+            border-color: #e74c3c !important;
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>eFishery</h1>
+
+    <div class="contact-info">
+        <p>PT Multidaya Teknologi Nusantara<br>
+            Jl. Malabar No.37, Samoja, Kec. Batununggal, Kota Bandung, Jawa Barat 40273</p>
+
+        <p>Email: mail@efishery.com<br>
+            Phone: (022) 30500324<br>
+            Fax: (022) 30500324</p>
+    </div>
+
+    <hr>
+
+    <form id="contact-form">
+        <div class="form-group">
+            <label for="name">Name Anda</label>
+            <input type="text" id="name" name="name" placeholder="Masukkan nama Anda">
+            <div id="name-error" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email anda</label>
+            <input type="email" id="email" name="email" placeholder="Masukkan email Anda">
+            <div id="email-error" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Nomor Telepon Anda</label>
+            <input type="tel" id="phone" name="phone" placeholder="Masukkan nomor telepon Anda">
+            <div id="phone-error" class="error-message"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="feedback">Beri tahu kami masukan anda</label>
+            <textarea id="feedback" name="feedback" placeholder="Tulis masukan Anda di sini"></textarea>
+            <div id="feedback-error" class="error-message"></div>
+        </div>
+
+        <button type="submit">Kirim Pesan</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const contactForm = document.getElementById('contact-form');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    // Reset previous error messages and styles
+                    clearErrors();
+
+                    // Validate form fields
+                    const isNameValid = validateName();
+                    const isEmailValid = validateEmail();
+                    const isPhoneValid = validatePhone();
+                    const isFeedbackValid = validateFeedback();
+
+                    // If all validations pass, submit the form
+                    if (isNameValid && isEmailValid && isPhoneValid && isFeedbackValid) {
+                        // In a real application, you would send the data to a server here
+                        alert('Pesan berhasil dikirim! Terima kasih atas masukan Anda.');
+                        contactForm.reset();
+                    }
+                });
+            }
+
+            // Add real-time validation on blur
+            document.getElementById('name').addEventListener('blur', validateName);
+            document.getElementById('email').addEventListener('blur', validateEmail);
+            document.getElementById('phone').addEventListener('blur', validatePhone);
+            document.getElementById('feedback').addEventListener('blur', validateFeedback);
+
+            // Validation functions
+            function validateName() {
+                const nameInput = document.getElementById('name');
+                const errorElement = document.getElementById('name-error');
+                const nameValue = nameInput.value.trim();
+
+                if (nameValue === '') {
+                    showError(nameInput, errorElement, 'Name dibutuhkan!');
+                    return false;
+                }
+
+                clearError(nameInput, errorElement);
+                return true;
+            }
+
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const errorElement = document.getElementById('email-error');
+                const emailValue = emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (emailValue === '') {
+                    showError(emailInput, errorElement, 'Email dibutuhkan!');
+                    return false;
+                } else if (!emailRegex.test(emailValue)) {
+                    showError(emailInput, errorElement, 'Format email tidak valid!');
+                    return false;
+                }
+
+                clearError(emailInput, errorElement);
+                return true;
+            }
+
+            function validatePhone() {
+                const phoneInput = document.getElementById('phone');
+                const errorElement = document.getElementById('phone-error');
+                const phoneValue = phoneInput.value.trim();
+                const phoneRegex = /^[0-9]{8,13}$/; // Simple phone number validation
+
+                if (phoneValue === '') {
+                    showError(phoneInput, errorElement, 'Nomor telepon dibutuhkan!');
+                    return false;
+                } else if (!phoneRegex.test(phoneValue)) {
+                    showError(phoneInput, errorElement, 'Format nomor telepon tidak valid! (8-13 angka)');
+                    return false;
+                }
+
+                clearError(phoneInput, errorElement);
+                return true;
+            }
+
+            function validateFeedback() {
+                const feedbackInput = document.getElementById('feedback');
+                const errorElement = document.getElementById('feedback-error');
+                const feedbackValue = feedbackInput.value.trim();
+
+                if (feedbackValue === '') {
+                    showError(feedbackInput, errorElement, 'Feedback dibutuhkan!');
+                    return false;
+                }
+
+                clearError(feedbackInput, errorElement);
+                return true;
+            }
+
+            // Helper functions
+            function showError(input, errorElement, message) {
+                errorElement.textContent = message;
+                input.classList.add('error-border');
+            }
+
+            function clearError(input, errorElement) {
+                errorElement.textContent = '';
+                input.classList.remove('error-border');
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error-message');
+                const inputs = document.querySelectorAll('#contact-form input, #contact-form textarea');
+
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                });
+
+                inputs.forEach(input => {
+                    input.classList.remove('error-border');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
